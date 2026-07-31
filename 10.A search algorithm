@@ -1,0 +1,45 @@
+graph = {
+    'A': [('B', 1), ('C', 3)],
+    'B': [('D', 3), ('E', 6)],
+    'C': [('F', 5)],
+    'D': [],
+    'E': [('G', 2)],
+    'F': [('G', 2)],
+    'G': []
+}
+
+heuristic = {
+    'A': 7,
+    'B': 6,
+    'C': 4,
+    'D': 3,
+    'E': 2,
+    'F': 2,
+    'G': 0
+}
+
+start = input("Enter Start Node: ")
+goal = input("Enter Goal Node: ")
+
+open_list = [(heuristic[start], 0, start, [start])]
+visited = set()
+
+while open_list:
+    open_list.sort()
+    f, g, node, path = open_list.pop(0)
+
+    if node == goal:
+        print("Best Path:", " -> ".join(path))
+        print("Cost:", g)
+        break
+
+    if node in visited:
+        continue
+    visited.add(node)
+
+    for nxt, cost in graph[node]:
+        if nxt not in visited:
+            open_list.append((g + cost + heuristic[nxt],
+                              g + cost,
+                              nxt,
+                              path + [nxt]))
